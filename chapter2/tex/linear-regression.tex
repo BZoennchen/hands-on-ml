@@ -1,0 +1,97 @@
+% !TeX encoding = utf8
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathpazo}
+\usepackage{palatino}
+\usefonttheme{professionalfonts}
+
+\renewcommand\familydefault{\rmdefault}
+
+\newcommand{\A}{\mathbf{A}}
+\newcommand{\Pro}{\mathbf{P}}
+\newcommand{\xx}{\mathbf{x}}
+\newcommand{\bb}{\mathbf{b}}
+\newcommand{\ee}{\mathbf{e}}
+\newcommand{\pp}{\mathbf{p}}
+\newcommand\inner[2]{\langle #1, #2 \rangle }
+\newcommand{\R}{\mathbb{R}}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\title{Hands on Machine Learning}
+\subtitle{Linear Regression}
+\author{\href{mailto:zoennchen.benedikt@hm.edu}{\textbf{Benedikt Z\"onnchen}}} 
+\date{\today}
+%\setdefaultlanguage[spelling=new]{german}
+
+\begin{document}
+	
+	\begin{frame}
+		\titlepage
+	\end{frame}
+
+	\begin{frame}
+		Given $m$ data points, e.g., 
+		\begin{equation*}
+			(a_{1,1}, \ldots, a_{1,n-1}, b_1), \ldots, (a_{m,1}, \ldots a_{m,n-1}, b_m)
+		\end{equation*}
+		Let $\mathbf{a}_i = (a_{i,1}, \ldots, a_{i,n})^T$.
+		We search for a linear function $f$ with $f : \mathbb{R}^n \rightarrow \mathbb{R}$, such that,
+		\begin{equation*}
+			\forall i \in \{1,\ldots, m\}: f(\mathbf{a}_i) = x_0 + x_1 \cdot a_{i,1} + \ldots x_n \cdot a_{i,n-1} = \inner{\mathbf{a}_i^T}{\xx} = b_i
+		\end{equation*}
+		In other words, we search for $\xx$, such that
+		\begin{equation*}
+			\A \xx = \bb
+		\end{equation*}
+		with 
+		\begin{equation*}
+			\A = \begin{bmatrix}
+				1 & a_{1,1} & \ldots & a_{1, n-1} \\
+				1 & \ddots & \ddots & \vdots \\
+				\vdots & \ddots & \ddots & \vdots \\
+				1 & \ldots & \ldots & a_{m,n-1} 
+			\end{bmatrix}, \xx = \begin{bmatrix} x_0 \\ \vdots \\ x_{n-1} \end{bmatrix}, \bb = \begin{bmatrix} b_1 \\ \vdots \\ b_{m} \end{bmatrix}
+		\end{equation*}
+	\end{frame}
+
+	\begin{frame}
+		We want to solve the linear equation
+		\begin{equation}
+			\A \cdot \xx = \bb
+		\end{equation}
+		where $\A \in \mathbb{R}^{m \times n}$, $m > n$ (more rows than columns).
+		\begin{flushleft}
+			It is very likely that $\A^{-1}$ does not exists and therefore, there is no solution, i.e., no $\xx$ satisfying the equation.
+		\end{flushleft}
+		In general we search for
+		\begin{equation}
+			\argmin\limits_{\hat{\xx} \in \R^n} \left\Vert  \A\hat{\xx} - \bb \right\Vert = \ee
+		\end{equation}
+		Since $\ee$ is the minimal Euclidean distance $\A\hat{\xx} = \pp$ is the projection of $\bb$ onto $C(\A)$ (column space of $\A$)
+	\end{frame}
+
+
+	\begin{frame}
+	Since $\bb - \A \hat{\xx} = \ee \perp C(\A)$, it follows that
+	\begin{equation}
+		\A^T \pp = 	\A^T (\bb - \A \hat{\xx}) = \mathbf{0}
+	\end{equation}
+	Therefore, we solve 
+	\begin{equation}
+		\A^T\A \hat{\xx} = \A^T \bb
+	\end{equation}
+	for which a solution exists!
+		\begin{equation}
+	\hat{\xx} = (\A^T\A)^{-1}\A^T \bb
+	\end{equation}
+	We can also compute the projection matrix
+	\begin{equation}
+		\Pro = \A(\A^T\A)^{-1}\A^T
+	\end{equation}
+	\end{frame}
+\end{document}
