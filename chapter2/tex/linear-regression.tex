@@ -4,11 +4,11 @@
 \usepackage[english]{babel}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{mathpazo}
-\usepackage{palatino}
-\usefonttheme{professionalfonts}
-
-\renewcommand\familydefault{\rmdefault}
+\usefonttheme[onlymath]{serif}
+%\usepackage{mathpazo}
+%\usepackage{palatino}
+%\usefonttheme{professionalfonts}
+%\renewcommand\familydefault{\rmdefault}
 
 \newcommand{\A}{\mathbf{A}}
 \newcommand{\Pro}{\mathbf{P}}
@@ -21,6 +21,14 @@
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
+
+\addtobeamertemplate{navigation symbols}{}{%
+	\usebeamerfont{footline}%
+	\usebeamercolor[fg]{footline}%
+	\hspace{1em}%
+	\insertframenumber/\inserttotalframenumber
+}
+
 
 \title{Hands on Machine Learning}
 \subtitle{Linear Regression}
@@ -60,22 +68,30 @@
 	\end{frame}
 
 	\begin{frame}
+		
+	\end{frame}
+
+	\begin{frame}
 		We want to solve the linear equation
 		\begin{equation}
 			\A \cdot \xx = \bb
 		\end{equation}
 		where $\A \in \mathbb{R}^{m \times n}$, $m > n$ (more rows than columns).
 		\begin{flushleft}
-			It is very likely that $\A^{-1}$ does not exists and therefore, there is no solution, i.e., no $\xx$ satisfying the equation.
+			It is very likely that $\A^{-1}$ does not exists and therefore, there is no solution, i.e., no $\xx$ satisfies the equation.
 		\end{flushleft}
 		In general we search for
 		\begin{equation}
-			\argmin\limits_{\hat{\xx} \in \R^n} \left\Vert  \A\hat{\xx} - \bb \right\Vert = \ee
+			\argmin\limits_{\hat{\xx} \in \R^n} \left\Vert  \A\hat{\xx} - \bb \right\Vert = \left\Vert \ee \right\Vert
 		\end{equation}
-		Since $\ee$ is the minimal Euclidean distance $\A\hat{\xx} = \pp$ is the projection of $\bb$ onto $C(\A)$ (column space of $\A$)
+		$\left\Vert \ee \right\Vert$ is the minimal Euclidean distance from $\bb$ to $C(\A)$ (column space of $\A$).
+		Therefore, $\A\hat{\xx} = \pp$ is the projection of $\bb$ onto $C(\A)$.
 	\end{frame}
 
-
+	\begin{frame}
+		
+	\end{frame}
+	
 	\begin{frame}
 	Since $\bb - \A \hat{\xx} = \ee \perp C(\A)$, it follows that
 	\begin{equation}
