@@ -1,0 +1,33 @@
+\ProvidesPackage{beamerthemeHM}
+\usetheme{Rochester}
+\useinnertheme{default}
+\setbeamercolor{block}{fg=black}
+\setbeamercolor{definition}{fg=black}
+
+\setbeamercolor{block title}{bg=myblue,fg=white}
+\setbeamercolor{structure}{fg=hmred}
+
+\setbeamercolor{example text}{fg=mygreen,bg=white}
+\setbeamertemplate{navigation symbols}[only frame symbol]
+%\setbeamercolor{caption name}{fg=black}
+
+\AtBeginSubsection[]{
+	\begin{frame}
+		\vfill
+		\centering
+		\begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+			\usebeamerfont{title}\insertsubsectionhead\par%
+		\end{beamercolorbox}
+		\vfill
+	\end{frame}
+}
+
+\usefonttheme{professionalfonts}
+
+\setlength{\fboxsep}{5pt}%
+\setlength{\fboxrule}{3pt}%
+
+\newcommand{\hl}[1]{\textbf{#1}}
+\newcommand{\hll}[1]{\textit{#1}}
+\newcommand{\term}[1]{{\color{myblue}#1}}
+\newcommand{\comment}[1]{{\color{mygray}\scriptsize{#1}}}
