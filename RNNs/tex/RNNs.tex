@@ -24,6 +24,40 @@
 \end{frame}
 
 \section{Motivation}
+
+\begin{frame}
+	\frametitle{Motivation}
+	\framesubtitle{Melodie-Generierung}
+	\begin{figure}
+		\includegraphics[width=\textwidth]{notes.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Motivation}
+	\framesubtitle{Text-Generierung}
+	\begin{center}
+		``Die Wolken befinden sich im \textbf{[???]}'' 
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Motivation}
+	\framesubtitle{Zeitreihen allgemein}
+	\begin{figure}
+	\includegraphics[width=\textwidth]{timeseries}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Motivation}
+	\framesubtitle{Nicht sequenzielle Probleme}
+	Viele Probleme lassen sich in ein sequenzielles Problem transformieren. Zum Beispiel:
+	\begin{center}
+		Objekterkennung auf einem Bild durch Betrachtung unterschiedlicher Bereiche über die Zeit.
+	\end{center}
+\end{frame}
+
 \begin{frame}
 	\frametitle{Motivation}
 	\begin{figure}
@@ -35,7 +69,7 @@
 \section{Von Feedforward zu Recurrent}
 \begin{frame}
 	\frametitle{Von Feedforward zu Recurrent}
-	Die Eingabe durchläuft im Falle von \term{Feedforward Neuronale Networks} das Netz von vorne nach hinten ohne Zyklus.
+	Die Eingabe durchläuft im Falle von \term{Feedforward Neuronal Networks} (FNN) das Netz von vorne nach hinten ohne Zyklus.
 	Das Netz bildet einen gerichteten azyklischen Graphen.
 \end{frame}
 
@@ -96,6 +130,7 @@
 
 \begin{frame}
 	\frametitle{Von Feedforward zu Recurrent}
+	\framesubtitle{Recurrent Neural Networks (RNN)}
 	\begin{columns}
 		\begin{column}{0.3\textwidth}
 			\begin{enumerate}[label=$\bullet$]
@@ -115,6 +150,7 @@
 
 \begin{frame}
 	\frametitle{Von Feedforward zu Recurrent}
+	\framesubtitle{Recurrent Neural Networks (RNN)}
 	\begin{columns}
 		\begin{column}{0.35\textwidth}
 			\begin{enumerate}[label=$\bullet$]
@@ -133,45 +169,217 @@
 
 \begin{frame}
 	\frametitle{Von Feedforward zu Recurrent}
-\begin{columns}
-	\begin{column}{0.3\textwidth}
+		\framesubtitle{Recurrent Neural Networks (RNN)}
 	\begin{figure}
-		\includegraphics[scale=0.7]{rnn-diagram.pdf}
+		\includegraphics[scale=0.9]{rnn-diagram.pdf}
 	\end{figure}
-	\end{column}
-	\hfill
-	\begin{column}{0.7\textwidth}
-		\begin{figure}
-			\includegraphics[scale=0.7]{rnn-diagram-unfold}
+\end{frame}
+
+\section{Recurrent Neural Networks (RNN)}
+\begin{frame}
+	\frametitle{Recurrent Neural Networks (RNN)}
+	\framesubtitle{Kompakte Darstellung}
+			\begin{figure}
+				\includegraphics[scale=0.9]{rnn-diagram-unfold}
+			\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recurrent Neural Networks (RNN)}
+		\framesubtitle{Ausgebreitet}
+			\begin{figure}
+			\includegraphics[width=0.55\textwidth]{simplest-rnn}
 		\end{figure}
+	\begin{theorem}
+		Für jedes \term{RNN} gibt es ein \term{Feedforward Network} mit dem gleichen Verhalten über eine endliche Zeit \cite{Rumelhart1987}.
+	\end{theorem}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recurrent Neural Networks (RNN)}
+	\framesubtitle{Back-Propagation Through Time (BPTT)}
+	\begin{figure}
+		\includegraphics[width=1.0\textwidth]{bbtt}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}
+		\frametitle{Recurrent Neural Networks (RNN)}
+		\framesubtitle{Back-Propagation Through Time (BPTT)}
+		\begin{quoting}
+		``If training vanilla neural nets is optimization over functions, training recurrent nets is optimization over programs.'' -- Andrej Karpathy
+	\end{quoting}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recurrent Neural Networks (RNN)}
+	\framesubtitle{Back-Propagation Through Time (BPTT)}
+	\begin{equation*}
+		{\color{red}\frac{\partial \mathbf{h}_t}{\partial W}} = \frac{\partial f(\mathbf{x}_t, \mathbf{h}_{t-1}, W)}{\partial W} +  \frac{\partial f(\mathbf{x}_t, \mathbf{h}_{t-1}, W)}{\partial \mathbf{h}_{t-1}} \cdot {\color{red}\frac{\partial \mathbf{h}_{t-1}}{\partial W}}
+	\end{equation*}\\
+	\vspace{1cm}
+	\hl{$\Rightarrow$ Exponentielle Abhängigkeit zwischen Fehler und Gewichte $W$}\\
+	\vspace{0.5cm}
+	\hl{$\Rightarrow$ Gradienten tendieren zu explodieren oder zu verschwinden.}
+	\begin{equation*}
+		\lim\limits_{N \rightarrow \infty}(x \cdot w_{ij}^N) = 
+		\begin{cases}
+			\infty & \text{ für } w_{ij} > 1.0 \\
+			0 & \text{ für } w_{ij} < 1.0
+		\end{cases} 
+	\end{equation*}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recurrent Neural Networks (RNN)}
+	%\framesubtitle{Probleme}
+%	\hl{Probleme}:
+%	\begin{enumerate}[label=$\bullet$]
+%		\item Black Box Problem
+%		\item Berechnungsaufwand (besonders beim Training) $\Rightarrow$ hoher Ressourcenverbrauch
+%		\item Je komplexer das Netz desto mehr Daten werden fürs Training gebraucht
+%		\item Keine Garantie für Korrektheit
+%		\item Explodierende oder verschwindende Gradienten
+%		\item Information tendiert sich ``auszuwaschen''
+%		\item Schlechtes Langzeitgedächtnis
+%	\end{enumerate}
+	RNNs in ihrer ursprünglichen Form werden kaum noch benutzt. Stattdessen setzt man auf \term{Long Short-term Memory RNNs} kurz \term{LSTMs}.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Recurrent Neural Networks (RNN)}
+	%\framesubtitle{Probleme}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\hl{Vorteile}:
+			\begin{enumerate}[label={\color{mygreen}\textbf{+}}]
+				\item Variable Eingabegröße
+				\item Modellgröße explodiert nicht bei längerer Eingabe
+				\item Berechnung nimmt historische Informationen auf
+				\item Gewichte werden über die Zeit geteilt
+			\end{enumerate}
+		\end{column}
+		\hfill
+		\begin{column}{0.5\textwidth}
+		\hl{Nachteile}:
+		\begin{enumerate}[label={\color{myred}\textbf{-}}]
+			\item Langsame (sequenzielle) Berechnung
+			\item Informationen die lange zurück liegen gehen verloren
+			\item Keine Möglichkeit zukünftige Eingabe in die derzeitige Berechnung einzubinden
+		\end{enumerate}
 	\end{column}
 \end{columns}
 \end{frame}
 
 
+\section{Long Short-term Memory}
 \begin{frame}
-	\frametitle{Von Feedforward zu Recurrent}
-	\begin{theorem}
-		Für jedes \term{RNN} gibt es ein \term{Feedforward Network} mit dem gleichen Verhalten über eine endliche Zeit \cite{Rumelhart1987}.
-	\end{theorem}
-	\begin{figure}
-		\includegraphics[width=0.55\textwidth]{simplest-rnn}
-	\end{figure}
+	\frametitle{Long Short-term Memory}
+	%framesubtitle{Lang- und Kurzzeitgedächtnis}
+	
+	\begin{center}
+		``Die Wolken befinden sich im \textbf{[???]}''
+	\end{center}
+
+	\vspace{0.5cm}
+	
+	\begin{center}
+		``Ich bin in Frankreich aufgewachsen [...] Ich spreche \textbf{[???]}''
+	\end{center}
+		
+	\vspace{0.5cm}
+	
+	\begin{center}
+		``The nurse notified the patient that his shift would be ending in an hour.''
+	\end{center}
+
 \end{frame}
 
 \begin{frame}
-	\frametitle{Recurrent Neural Networks}
-	\framesubtitle{Training (Gradient Descent)}
-	\hl{Probleme}:
-	\begin{enumerate}[label=$\bullet$]
-		\item Black Box Problem
-		\item Berechnungsaufwand (besonders beim Training) $\Rightarrow$ hoher Ressourcenverbrauch
-		\item Je komplexer das Netz desto mehr Daten werden fürs Training gebraucht
-		\item Keine Garantie für Korrektheit
-		\item Explodierende oder verschwindende Gradienten
-		\item Information tendiert sich ``auszuwaschen''
-		\item Schlechtes Langzeitgedächtnis
-	\end{enumerate}
+	\frametitle{Long Short-term Memory}
+	%framesubtitle{Lang- und Kurzzeitgedächtnis}
+	
+	\hl{Probleme}:\\
+	%\begin{ate}[label=$\bullet$]
+		Um zu lernen Informationen über einen längeren Zeitraum zu Speichern braucht es wegen der explodierenden oder verschwindenden Fehler in der \term{recurrent backpropagation} zu viel Ressourcen/Rechenzeit \cite{Hochreiter1997}.\\\vspace{1cm}
+	%\end{enumerate}
+
+	\hl{Lösungsidee}:\\
+	%\begin{enumerate}[label=$\bullet$]
+	Schaffe einen direkten Weg durch das abgerollte Netzwerk.
+	%\end{enumerate}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Long Short-term Memory}
+	%framesubtitle{Lang- und Kurzzeitgedächtnis}
+	
+	\begin{figure}
+		\includegraphics[width=0.85\textwidth]{lstm-cell}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Long Short-term Memory}
+	\framesubtitle{Intuition durch Gleichungen}
+	\hl{Filter}:
+	\begin{equation*}
+		y(t) = w_1 \cdot x(t) + w_2 \cdot y(t-1)
+	\end{equation*}
+	\hl{``RNNs''}:
+	\begin{equation*}
+		\begin{split}
+			y(t) &= w_1 \cdot x(t) + w_2 \cdot m(t-1)\\
+			m(t) &= w_3 \cdot x(t) + w_4 \cdot m(t-1)
+		\end{split}
+	\end{equation*}
+		\hl{``LSTMs''}:
+	\begin{equation*}
+		\begin{split}
+			y(t) &= w_1 \cdot x(t) + w_2 \cdot m(t-1)\\
+			m(t) &= u(t) \cdot  \left(w_3 \cdot x(t) + w_4 \cdot m(t-1)\right) + (1-u(t)) \cdot m(t-1)\\
+			u(t) &= \sigma(w_5 \cdot x(t) + w_6 \cdot m(t-1))
+		\end{split}
+	\end{equation*}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Long Short-term Memory}
+	%\framesubtitle{Probleme}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\hl{Vorteile} (gegenüber Vanilla RNN):
+			\begin{enumerate}[label={\color{mygreen}\textbf{+}}]
+				\item Kommt mit längeren Abhängigkeiten klar
+				\item Stabilerer ``Speicher''
+				\item Additiver statt Multiplikativer Fehler beim BPTT
+			\end{enumerate}
+		\end{column}
+		\hfill
+		\begin{column}{0.5\textwidth}
+			\hl{Nachteile} (gegenüber Vanilla RNN):
+			\begin{enumerate}[label={\color{myred}\textbf{-}}]
+				\item Längeres Training mit mehr Ressourcen
+				\item Anfällig für Überanpassung
+				%	\item Keine Möglichkeit zukünftige Eingabe in die derzeitige Berechnung einzubinden
+				%	\item Gradientenproblem nicht vollständig gelöst
+			\end{enumerate}
+		\end{column}
+	\end{columns}
+	\vspace{1.0cm}
+	Die sequenzielle Struktur, d.h. der \hl{Informationsfluss durch die Zeit}, bleibt erhalten!\\
+	\vspace{0.5cm}
+	$\Rightarrow$ Dennoch akkumuliert sich der Fehler beim BPTT und die Information wird (wenn auch viel weniger) mit der Zeit verwischt.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Vorschau}
+	%\framesubtitle{Probleme}
+	Können wir diese Struktur weiter aufweichen? Können wir lernen auf genau die Information zuzugreifen, wenn wir sie brauchen? Können wir \hl{Aufmerksamkeit} lernen?
 \end{frame}
 
 %\begin{frame}
